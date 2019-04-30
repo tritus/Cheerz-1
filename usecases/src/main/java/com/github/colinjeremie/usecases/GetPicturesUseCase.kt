@@ -6,5 +6,5 @@ import java.util.*
 
 class GetPicturesUseCase(private val repository: PicturesRepository) {
 
-    fun getPicturesSinceDate(date: Date): List<Picture> = repository.getPicturesSinceDate(date)
+    suspend fun getPicturesSinceDate(date: Date): List<Picture> = repository.getPicturesSinceDate(date)
 }

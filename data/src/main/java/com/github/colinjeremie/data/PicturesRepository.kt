@@ -5,7 +5,7 @@ import java.util.*
 
 class PicturesRepository(private val picturesSource: PicturesSource) {
 
-    fun getPicturesSinceDate(date: Date): List<Picture> {
-        return picturesSource.getPicturesSinceDate(date)
+    suspend fun getPicturesSinceDate(date: Date): List<Picture> {
+        return picturesSource.getPicturesSinceDate(date).await()
     }
 }
