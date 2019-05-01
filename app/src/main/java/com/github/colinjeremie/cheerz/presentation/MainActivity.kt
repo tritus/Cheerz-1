@@ -112,11 +112,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     }
 
     override fun displayFullScreenPicture(pictureHdUrl: String) {
-        FullScreenPictureDialogFragment.create(pictureHdUrl, supportFragmentManager)
+        FullScreenPictureDialogFragment.show(pictureHdUrl, supportFragmentManager)
     }
 
     override fun onItemClicked(picture: Picture) {
-        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.explanation, picture.date))
+        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.hdurl, picture.explanation, picture.date))
     }
 
     override fun onItemLongClicked(picture: Picture) {

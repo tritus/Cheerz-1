@@ -18,7 +18,7 @@ class FullScreenPictureDialogFragment : DialogFragment(), FullScreenPictureDialo
         private const val EXTRA_HD_URL = "fullScreenPictureDialogFragment.extra_hd_url"
         private const val TAG = "FullScreenPictureDialogFragment"
 
-        fun create(url: String, fragmentManager: FragmentManager) {
+        fun show(url: String, fragmentManager: FragmentManager) {
             val fragment = FullScreenPictureDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(EXTRA_HD_URL, url)
