@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
+import com.github.colinjeremie.cheerz.framework.InMemoryStoragePictureSource
 import com.github.colinjeremie.cheerz.framework.NetworkPictureSource
 import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.data.PicturesRepository
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
     }
 
     private val repository: PicturesRepository by lazy {
-        PicturesRepository(NetworkPictureSource(gson))
+        PicturesRepository(NetworkPictureSource(gson), InMemoryStoragePictureSource())
     }
     private val presenter: MainPresenter by lazy {
         MainPresenter(this, GetPicturesUseCase(repository))

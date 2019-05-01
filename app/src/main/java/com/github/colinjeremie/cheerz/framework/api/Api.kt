@@ -9,5 +9,5 @@ import java.sql.Date
 interface Api {
 
     @GET("planetary/apod")
-    fun getPictures(@Query("date") date: Date, @Query("api_key") api_key: String): Deferred<Picture>
+    fun getPicture(@Query("date") date: Date, @Query("api_key") api_key: String): Deferred<Picture>
 }

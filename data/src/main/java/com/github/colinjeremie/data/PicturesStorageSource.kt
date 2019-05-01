@@ -4,6 +4,7 @@ import com.github.colinjeremie.domain.Picture
 import kotlinx.coroutines.Deferred
 import java.util.*
 
-interface PicturesSource {
+interface PicturesStorageSource {
     fun getPicture(date: Date): Deferred<Picture>
+    fun savePicture(picture: Picture)
 }
