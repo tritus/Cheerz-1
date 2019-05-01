@@ -9,20 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.colinjeremie.cheerz.R
-import com.squareup.picasso.Picasso
-import java.text.DateFormat.MEDIUM
-import java.text.SimpleDateFormat
 import java.util.*
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
 
     companion object {
 
-        private const val EXTRA_TITLE = "extra_title"
-        private const val EXTRA_DESCRIPTION = "extra_description"
-        private const val EXTRA_PICTURE_URL = "extra_picture_url"
-        private const val EXTRA_PICTURE_HD_URL = "extra_picture_hd_url"
-        private const val EXTRA_DATE = "extra_date"
+        const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_DESCRIPTION = "extra_description"
+        const val EXTRA_PICTURE_URL = "extra_picture_url"
+        const val EXTRA_PICTURE_HD_URL = "extra_picture_hd_url"
+        const val EXTRA_DATE = "extra_date"
 
         fun createIntent(context: Context, title: String, pictureUrl: String, pictureHdUrl: String?, description: String, date: Date) =
                 Intent(context, DetailsActivity::class.java).apply {
@@ -39,50 +36,40 @@ class DetailsActivity : AppCompatActivity() {
     private val dateTextView: TextView by lazy { findViewById<TextView>(R.id.date_text_view) }
     private val descriptionTextView: TextView by lazy { findViewById<TextView>(R.id.description_text_view) }
 
-    private var pictureHdUrl: String? = null
+    private val presenter: DetailsPresenter by lazy { DetailsPresenter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_details)
 
-        pictureHdUrl = intent.getStringExtra(EXTRA_PICTURE_HD_URL)
-
-        val pictureUrl = intent.getStringExtra(EXTRA_PICTURE_URL)
-        val date = intent.getSerializableExtra(EXTRA_DATE) as Date
-
-        dateTextView.text = SimpleDateFormat.getDateInstance(MEDIUM, Locale.getDefault()).format(date)
-        titleTextView.text = intent.getStringExtra(EXTRA_TITLE)
-        descriptionTextView.text = intent.getStringExtra(EXTRA_DESCRIPTION)
-
-        Picasso.get().load(pictureUrl).into(imageView)
+        presenter.load(intent)
     }
 
-    private fun displayFullscreen() {
-        pictureHdUrl?.let {
-            FullScreenPictureDialogFragment.show(it, supportFragmentManager)
-        }
+    override fun displayDate(date: String) {
+        dateTextView.text = date
+    }
+
+    override fun displayTitle(title: String) {
+        titleTextView.text = title
+    }
+
+    override fun displayDescription(description: String) {
+        descriptionTextView.text = description
+    }
+
+    override fun getTargetImageView(): ImageView = imageView
+
+    override fun displayPictureInHd(url: String) {
+        FullScreenPictureDialogFragment.show(url, supportFragmentManager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        presenter.onCreateOptionsMenu(menuInflater, menu, supportActionBar)
 
-        if (pictureHdUrl != null) {
-            menuInflater.inflate(R.menu.details_menu, menu)
-        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
-            when (item?.itemId) {
-                android.R.id.home -> {
-                    onBackPressed()
-                    true
-                }
-                R.id.action_fullscreen -> {
-                    displayFullscreen()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
-            }
+            presenter.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 }

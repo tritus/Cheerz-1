@@ -15,7 +15,7 @@ import com.github.colinjeremie.cheerz.R
 class FullScreenPictureDialogFragment : DialogFragment(), FullScreenPictureDialogFragmentPresenter.Interaction {
 
     companion object {
-        private const val EXTRA_HD_URL = "fullScreenPictureDialogFragment.extra_hd_url"
+        private const val EXTRA_HD_URL = "extra_hd_url"
         private const val TAG = "FullScreenPictureDialogFragment"
 
         fun show(url: String, fragmentManager: FragmentManager) {
