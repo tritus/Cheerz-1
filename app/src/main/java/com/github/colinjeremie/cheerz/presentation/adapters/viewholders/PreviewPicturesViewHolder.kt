@@ -8,15 +8,18 @@ import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.domain.Picture
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 
-class PreviewPicturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PreviewPicturesViewHolder(itemView: View, private val onItemLongClickListener: ((Picture) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
 
     private val imageView: ImageView by lazy { itemView.findViewById<ImageView>(R.id.preview_picture_image_view) }
     private val retryButton: Button by lazy { itemView.findViewById<Button>(R.id.retry_button) }
     private val loadingView: View by lazy { itemView.findViewById<View>(R.id.loading_view) }
 
     fun bindData(data: Picture) {
+        itemView.setOnLongClickListener {
+            onItemLongClickListener?.invoke(data)
+            true
+        }
         retryButton.setOnClickListener {
             loadPicture(data.url)
         }

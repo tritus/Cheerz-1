@@ -5,4 +5,6 @@
     <string name="error_message_internal_server">Internal Service Error</string>
     <string name="fetch_pictures_button_text">Fetch pictures</string>
     <string name="retrieve_new_pictures_button_text">Get new pictures</string>
+    <string name="error_message_no_hd_picture_available">No hd picture available</string>
+    <string name="retry_button_text">retry</string>
 </resources>

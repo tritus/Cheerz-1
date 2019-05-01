@@ -6,7 +6,6 @@ import com.github.colinjeremie.domain.Picture
 import com.github.colinjeremie.usecases.GetPicturesUseCase
 import kotlinx.coroutines.*
 import retrofit2.HttpException
-import java.lang.Exception
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -55,6 +54,16 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
         interaction.resetView()
     }
 
+    fun onPictureLongClicked(picture: Picture) {
+        val hdPictureUrl = picture.hdurl
+
+        if (hdPictureUrl?.isNotEmpty() == true) {
+            interaction.displayFullScreenPicture(hdPictureUrl)
+        } else {
+            interaction.showErrorMessage(R.string.error_message_no_hd_picture_available)
+        }
+    }
+
     interface Interaction {
         fun render(pictures: List<Picture>)
         fun onRefresh()
@@ -63,5 +72,6 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
         fun showErrorMessage(@StringRes messageRes: Int)
         fun getNumberOfPicturesToRetrieve(): Int
         fun resetView()
+        fun displayFullScreenPicture(pictureHdUrl: String)
     }
 }

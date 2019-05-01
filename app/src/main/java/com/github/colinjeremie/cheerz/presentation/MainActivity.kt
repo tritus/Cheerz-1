@@ -39,7 +39,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
     private val numberEditText: EditText by lazy { findViewById<EditText>(R.id.last_number_of_pictures_view) }
     private val titleView: View by lazy { findViewById<View>(R.id.last_number_of_pictures_title_view) }
 
-    private val adapter: PreviewPicturesAdapter by lazy { PreviewPicturesAdapter() }
+    private val adapter: PreviewPicturesAdapter by lazy {
+        PreviewPicturesAdapter { picture ->
+            presenter.onPictureLongClicked(picture)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,5 +101,9 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
                     getString(R.string.error_message_generic)
                 }
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun displayFullScreenPicture(pictureHdUrl: String) {
+        FullScreenPictureDialogFragment.create(pictureHdUrl, supportFragmentManager)
     }
 }
