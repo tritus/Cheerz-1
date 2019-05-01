@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Cheerz</string>
+    <string name="error_message_unauthorized">You are unauthorized to do this request</string>
+    <string name="error_message_generic">An error happned !</string>
 </resources>

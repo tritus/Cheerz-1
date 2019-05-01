@@ -3,13 +3,13 @@ package com.github.colinjeremie.cheerz.presentation
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.colinjeremie.cheerz.R
-import com.github.colinjeremie.cheerz.framework.TestPictureSource
+import com.github.colinjeremie.cheerz.framework.NetworkPictureSource
 import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.data.PicturesRepository
 import com.github.colinjeremie.domain.Picture
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
     }
 
     private val repository: PicturesRepository by lazy {
-        PicturesRepository(TestPictureSource(gson))
+        PicturesRepository(NetworkPictureSource(gson))
     }
     private val presenter: MainPresenter by lazy {
         MainPresenter(this, GetPicturesUseCase(repository))
@@ -52,12 +52,28 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
         loadingView.visibility = View.VISIBLE
     }
 
-    override fun onRefreshDone() {
+    override fun onRefreshSuccess() {
         loadingView.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
 
+    override fun onRefreshFailure() {
+        loadingView.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        button.visibility = View.VISIBLE
+    }
+
     override fun render(pictures: List<Picture>) {
         adapter.items = pictures
+    }
+
+    override fun showErrorMessage(@StringRes messageRes: Int) {
+        val message =
+            if (messageRes != -1) {
+                getString(messageRes)
+            } else {
+                getString(R.string.error_message_generic)
+            }
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

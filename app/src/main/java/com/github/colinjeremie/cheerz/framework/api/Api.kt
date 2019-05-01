@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface Api {
 
     @GET("planetary/apod")
-    fun getPictures(@Query("date") date: String): Deferred<List<Picture>>
+    fun getPictures(@Query("date") date: String, @Query("api_key") api_key: String): Deferred<List<Picture>>
 }

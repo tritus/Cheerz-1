@@ -14,12 +14,17 @@ import java.util.*
 
 class NetworkPictureSource(private val gson: Gson) : PicturesSource {
 
+    companion object {
+        private const val API_KEY = "VzjaTVf9solTLdPw2GnHGI18AwkA9V03GeoZR3uZ"
+        private const val BASE_URL = "https://api.nasa.gov"
+    }
+
     private val api: Api by lazy {
         val okHttpClient = OkHttpClient().newBuilder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.nasa.gov")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -28,5 +33,5 @@ class NetworkPictureSource(private val gson: Gson) : PicturesSource {
         retrofit.create(Api::class.java)
     }
 
-    override fun getPicturesSinceDate(date: Date): Deferred<List<Picture>> = api.getPictures(gson.toJson(date))
+    override fun getPicturesSinceDate(date: Date): Deferred<List<Picture>> = api.getPictures(gson.toJson(date), API_KEY)
 }
