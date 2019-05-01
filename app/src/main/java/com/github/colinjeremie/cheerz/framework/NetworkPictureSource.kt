@@ -6,6 +6,7 @@ import com.github.colinjeremie.domain.Picture
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -33,5 +34,19 @@ class NetworkPictureSource(private val gson: Gson) : PicturesSource {
         retrofit.create(Api::class.java)
     }
 
-    override fun getPicturesSinceDate(date: Date): Deferred<List<Picture>> = api.getPictures(java.sql.Date(date.time), API_KEY)
+    override fun getPicturesBetweenDates(fromDate: Date, toDate: Date): Deferred<List<Picture>> = kotlinx.coroutines.GlobalScope.async {
+        val calendar = Calendar.getInstance().apply {
+            time = fromDate
+        }
+        val toDateInMillis = toDate.time
+        val list = mutableListOf<Picture>()
+
+        while (calendar.timeInMillis < toDateInMillis) {
+            val picture = api.getPictures(java.sql.Date(calendar.timeInMillis), API_KEY).await()
+
+            list.add(picture)
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        list
+    }
 }

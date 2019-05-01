@@ -5,5 +5,5 @@ import kotlinx.coroutines.Deferred
 import java.util.*
 
 interface PicturesSource {
-    fun getPicturesSinceDate(date: Date): Deferred<List<Picture>>
+    fun getPicturesBetweenDates(fromDate: Date, toDate: Date): Deferred<List<Picture>>
 }

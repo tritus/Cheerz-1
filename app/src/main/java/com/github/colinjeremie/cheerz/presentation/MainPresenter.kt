@@ -21,7 +21,14 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
 
         getPicturesScope = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val pictures = useCase.getPicturesSinceDate(Date())
+                val fromDate = Calendar.getInstance().let {
+                    it.time = Date()
+                    it.add(Calendar.DAY_OF_MONTH, -1)
+                    it.time
+                }
+                val toDate = Date()
+                val pictures = useCase.getPicturesBetweenDates(fromDate, toDate)
+
                 withContext(Dispatchers.Main) {
                     interaction.render(pictures)
                     interaction.onRefreshSuccess()
