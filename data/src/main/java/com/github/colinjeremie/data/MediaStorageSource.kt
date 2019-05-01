@@ -5,6 +5,6 @@ import kotlinx.coroutines.Deferred
 import java.util.*
 
 interface MediaStorageSource {
-    fun getMedia(date: Date, mediaType: String): Deferred<Media>
+    fun getMediaAtDate(date: Date): Deferred<Media>
     fun saveMedia(media: Media)
 }

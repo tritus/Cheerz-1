@@ -2,7 +2,6 @@ package com.github.colinjeremie.cheerz.framework
 
 import com.github.colinjeremie.cheerz.framework.api.Api
 import com.github.colinjeremie.data.MediaSource
-import com.github.colinjeremie.data.exceptions.MediaNotFoundException
 import com.github.colinjeremie.domain.Media
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -37,11 +36,10 @@ class NetworkMediaSource(private val gson: Gson) : MediaSource {
         retrofit.create(Api::class.java)
     }
 
-    override fun getMedia(date: Date, mediaType: String): Deferred<Media> =
+    override fun getMediaAtDate(date: Date): Deferred<Media> =
             CoroutineScope(Dispatchers.IO).async {
                 api.getMedia(java.sql.Date(date.time), API_KEY).await()
-                        .takeIf { it.isMediaTypeEquals(mediaType) }
-                        ?.let {
+                        .let {
                             Media(
                                     title = it.title,
                                     explanation = it.explanation,
@@ -51,7 +49,6 @@ class NetworkMediaSource(private val gson: Gson) : MediaSource {
                                     hdUrl = it.hdUrl
                             )
                         }
-                        ?: throw MediaNotFoundException()
             }
 
 }

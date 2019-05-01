@@ -21,10 +21,10 @@ class TestMediaSource(private val gson: Gson) : MediaSource {
 
     private val media: List<MediaApiModel> by lazy { gson.fromJson<List<MediaApiModel>>(json) }
 
-    override fun getMedia(date: Date, mediaType: String): Deferred<Media> =
+    override fun getMediaAtDate(date: Date): Deferred<Media> =
             CoroutineScope(Dispatchers.IO).async {
                 media
-                        .find { it.date.areDateEquals(date) && it.isMediaTypeEquals(mediaType) }
+                        .find { it.date.areDateEquals(date) }
                         ?.let {
                             Media(
                                     title = it.title,

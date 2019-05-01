@@ -18,13 +18,13 @@ class MediaRepository(private val networkSource: MediaSource, private val storag
 
             val media =
                     try {
-                        getMediaFromStorage(date, mediaType)
+                        getMediaFromStorageAtDate(date)
                     } catch (e: MediaNotFoundException) {
-                        getMediaFromNetwork(date, mediaType)?.also {
+                        getMediaFromNetworkAtDate(date).also {
                             storageSource.saveMedia(it)
                         }
                     }
-            if (media != null) {
+            if (media.mediaType == mediaType) {
                 list.add(media)
             }
             todayCalendar.add(Calendar.DAY_OF_MONTH, -1)
@@ -32,13 +32,9 @@ class MediaRepository(private val networkSource: MediaSource, private val storag
         return list
     }
 
-    private suspend fun getMediaFromStorage(date: Date, mediaType: String): Media =
-            storageSource.getMedia(date, mediaType).await()
+    private suspend fun getMediaFromStorageAtDate(date: Date): Media =
+            storageSource.getMediaAtDate(date).await()
 
-    private suspend fun getMediaFromNetwork(date: Date, mediaType: String): Media? =
-            try {
-                networkSource.getMedia(date, mediaType).await()
-            } catch (e: MediaNotFoundException) {
-                null
-            }
+    private suspend fun getMediaFromNetworkAtDate(date: Date): Media =
+            networkSource.getMediaAtDate(date).await()
 }

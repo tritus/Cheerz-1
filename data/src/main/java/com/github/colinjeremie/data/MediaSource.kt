@@ -5,5 +5,5 @@ import kotlinx.coroutines.Deferred
 import java.util.*
 
 interface MediaSource {
-    fun getMedia(date: Date, mediaType: String): Deferred<Media>
+    fun getMediaAtDate(date: Date): Deferred<Media>
 }

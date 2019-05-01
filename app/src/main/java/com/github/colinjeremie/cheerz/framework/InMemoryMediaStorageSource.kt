@@ -15,9 +15,9 @@ class InMemoryMediaStorageSource : MediaStorageSource {
         mutableListOf<Media>()
     }
 
-    override fun getMedia(date: Date, mediaType: String): Deferred<Media> =
+    override fun getMediaAtDate(date: Date): Deferred<Media> =
             CoroutineScope(Dispatchers.IO).async {
-                media.find { it.date.areDateEquals(date) && it.mediaType == mediaType }
+                media.find { it.date.areDateEquals(date) }
                         ?: throw MediaNotFoundException()
             }
 
