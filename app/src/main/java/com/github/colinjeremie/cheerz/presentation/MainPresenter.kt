@@ -17,13 +17,16 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
     fun onRetrieveButtonClicked() {
         getPicturesScope?.cancel()
 
+        val numberOfPicturesToRetrieve = interaction.getNumberOfPicturesToRetrieve()
+
         interaction.onRefresh()
 
         getPicturesScope = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val fromDate = Calendar.getInstance().let {
                     it.time = Date()
-                    it.add(Calendar.DAY_OF_MONTH, -1)
+
+                    it.add(Calendar.DAY_OF_MONTH, -numberOfPicturesToRetrieve)
                     it.time
                 }
                 val toDate = Date()
@@ -48,11 +51,17 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
         }
     }
 
+    fun onRetrieveNewPicturesButtonClicked() {
+        interaction.resetView()
+    }
+
     interface Interaction {
         fun render(pictures: List<Picture>)
         fun onRefresh()
         fun onRefreshSuccess()
         fun onRefreshFailure()
         fun showErrorMessage(@StringRes messageRes: Int)
+        fun getNumberOfPicturesToRetrieve(): Int
+        fun resetView()
     }
 }

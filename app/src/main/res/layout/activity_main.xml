@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
+    <TextView
+        android:id="@+id/last_number_of_pictures_title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Show me the last x pictures"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintBottom_toTopOf="@+id/last_number_of_pictures_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/last_number_of_pictures_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="30"
+        app:layout_constraintBottom_toTopOf="@+id/retrieve_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/retrieve_button"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -16,6 +38,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/retrieve_new_pictures_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retrieve_new_pictures_button_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

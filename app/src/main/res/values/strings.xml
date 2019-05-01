@@ -4,4 +4,5 @@
     <string name="error_message_generic">An error happned !</string>
     <string name="error_message_internal_server">Internal Service Error</string>
     <string name="fetch_pictures_button_text">Fetch pictures</string>
+    <string name="retrieve_new_pictures_button_text">Get new pictures</string>
 </resources>
