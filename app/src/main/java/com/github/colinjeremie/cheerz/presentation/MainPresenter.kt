@@ -3,12 +3,12 @@ package com.github.colinjeremie.cheerz.presentation
 import android.support.annotation.StringRes
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.domain.Picture
-import com.github.colinjeremie.usecases.GetPicturesUseCase
+import com.github.colinjeremie.usecases.GetMediaUseCase
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 
-class MainPresenter(private val interaction: Interaction, private val useCase: GetPicturesUseCase) {
+class MainPresenter(private val interaction: Interaction, private val useCase: GetMediaUseCase) {
 
     private var getPicturesScope: Job? = null
 

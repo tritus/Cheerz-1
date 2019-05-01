@@ -16,7 +16,7 @@ import com.github.colinjeremie.cheerz.framework.NetworkMediaSource
 import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.data.MediaRepository
 import com.github.colinjeremie.domain.Picture
-import com.github.colinjeremie.usecases.GetPicturesUseCase
+import com.github.colinjeremie.usecases.GetMediaUseCase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         MediaRepository(NetworkMediaSource(gson), InMemoryMediaStorageSource())
     }
     private val presenter: MainPresenter by lazy {
-        MainPresenter(this, GetPicturesUseCase(repository))
+        MainPresenter(this, GetMediaUseCase(repository))
     }
 
     private val retrieveButton: Button by lazy { findViewById<Button>(R.id.retrieve_button) }
