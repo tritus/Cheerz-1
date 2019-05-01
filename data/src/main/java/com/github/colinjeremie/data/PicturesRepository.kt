@@ -6,24 +6,27 @@ import java.util.*
 
 class PicturesRepository(private val networkSource: PicturesSource, private val storageSource: PicturesStorageSource) {
 
-    suspend fun getPicturesBetweenDates(fromDate: Date, toDate: Date): List<Picture> {
-        val fromCalendar = Calendar.getInstance().apply { time = fromDate }
-        val toDateInMillis = toDate.time
+    suspend fun getLastPictures(number: Int): List<Picture> {
+        val todayCalendar = Calendar.getInstance().apply { time = Date() }
         val list = mutableListOf<Picture>()
 
-        while (fromCalendar.timeInMillis < toDateInMillis) {
-            val date = fromCalendar.time
+        while (list.size < number) {
+            val date = todayCalendar.time
 
             val picture =
                     try {
                         storageSource.getPicture(date).await()
                     } catch (e: PictureNotFoundException) {
-                        networkSource.getPicture(date).await().also {
-                            storageSource.savePicture(it)
-                        }
+                        networkSource.getPicture(date).await()
+                                .takeIf { it.isMedia(Picture.MEDIA_TYPE_IMAGE) }
+                                ?.also {
+                                    storageSource.savePicture(it)
+                                }
                     }
-            list.add(picture)
-            fromCalendar.add(Calendar.DAY_OF_MONTH, 1)
+            if (picture != null) {
+                list.add(picture)
+            }
+            todayCalendar.add(Calendar.DAY_OF_MONTH, -1)
         }
         return list
     }

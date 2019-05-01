@@ -7,7 +7,6 @@ import com.github.colinjeremie.usecases.GetPicturesUseCase
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.HttpURLConnection
-import java.util.*
 
 class MainPresenter(private val interaction: Interaction, private val useCase: GetPicturesUseCase) {
 
@@ -22,14 +21,7 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
 
         getPicturesScope = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val fromDate = Calendar.getInstance().let {
-                    it.time = Date()
-
-                    it.add(Calendar.DAY_OF_MONTH, -numberOfPicturesToRetrieve)
-                    it.time
-                }
-                val toDate = Date()
-                val pictures = useCase.getPicturesBetweenDates(fromDate, toDate)
+                val pictures = useCase.getLastPictures(numberOfPicturesToRetrieve)
 
                 withContext(Dispatchers.Main) {
                     interaction.render(pictures)
