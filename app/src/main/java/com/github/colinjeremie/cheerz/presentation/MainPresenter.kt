@@ -47,7 +47,7 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
     }
 
     fun onPictureLongClicked(picture: Picture) {
-        val hdPictureUrl = picture.hdurl
+        val hdPictureUrl = picture.hdUrl
 
         if (hdPictureUrl?.isNotEmpty() == true) {
             interaction.displayFullScreenPicture(hdPictureUrl)

@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
-import com.github.colinjeremie.cheerz.framework.InMemoryStoragePictureSource
-import com.github.colinjeremie.cheerz.framework.NetworkPictureSource
+import com.github.colinjeremie.cheerz.framework.InMemoryMediaStorageSource
+import com.github.colinjeremie.cheerz.framework.NetworkMediaSource
 import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
-import com.github.colinjeremie.data.PicturesRepository
+import com.github.colinjeremie.data.MediaRepository
 import com.github.colinjeremie.domain.Picture
 import com.github.colinjeremie.usecases.GetPicturesUseCase
 import com.google.gson.Gson
@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         GsonBuilder().setDateFormat("yyyy-MM-dd").create()
     }
 
-    private val repository: PicturesRepository by lazy {
-        PicturesRepository(NetworkPictureSource(gson), InMemoryStoragePictureSource())
+    private val repository: MediaRepository by lazy {
+        MediaRepository(NetworkMediaSource(gson), InMemoryMediaStorageSource())
     }
     private val presenter: MainPresenter by lazy {
         MainPresenter(this, GetPicturesUseCase(repository))
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     }
 
     override fun onItemClicked(picture: Picture) {
-        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.hdurl, picture.explanation, picture.date))
+        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.hdUrl, picture.explanation, picture.date))
     }
 
     override fun onItemLongClicked(picture: Picture) {

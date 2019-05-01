@@ -3,9 +3,9 @@
     <string name="error_message_unauthorized">You are unauthorized to do this request</string>
     <string name="error_message_generic">An error happned !</string>
     <string name="error_message_internal_server">Internal Service Error</string>
-    <string name="fetch_pictures_button_text">Fetch pictures</string>
-    <string name="retrieve_new_pictures_button_text">Get new pictures</string>
-    <string name="error_message_no_hd_picture_available">No hd picture available</string>
+    <string name="fetch_pictures_button_text">Fetch media</string>
+    <string name="retrieve_new_pictures_button_text">Get new media</string>
+    <string name="error_message_no_hd_picture_available">No hd media available</string>
     <string name="retry_button_text">retry</string>
     <string name="menu_item_see_in_fullscreen_text">See in fullscreen</string>
 </resources>
