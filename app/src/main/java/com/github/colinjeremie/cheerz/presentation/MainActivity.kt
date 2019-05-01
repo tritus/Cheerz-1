@@ -1,6 +1,7 @@
 package com.github.colinjeremie.cheerz.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,7 +20,11 @@ import com.github.colinjeremie.usecases.GetPicturesUseCase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
-class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
+class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
+
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
 
     private val gson: Gson by lazy {
         GsonBuilder().setDateFormat("yyyy-MM-dd").create()
@@ -40,9 +45,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
     private val titleView: View by lazy { findViewById<View>(R.id.last_number_of_pictures_title_view) }
 
     private val adapter: PreviewPicturesAdapter by lazy {
-        PreviewPicturesAdapter { picture ->
-            presenter.onPictureLongClicked(picture)
-        }
+        PreviewPicturesAdapter(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +90,12 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
         resetView()
     }
 
-    override fun getNumberOfPicturesToRetrieve(): Int = numberEditText.text.toString().toInt()
+    override fun getNumberOfPicturesToRetrieve(): Int = try {
+        numberEditText.text.toString().toInt()
+    } catch (e: NumberFormatException) {
+        Log.e(TAG, "An error happened!", e)
+        0
+    }
 
     override fun render(pictures: List<Picture>) {
         adapter.items = pictures
@@ -105,5 +113,13 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
 
     override fun displayFullScreenPicture(pictureHdUrl: String) {
         FullScreenPictureDialogFragment.create(pictureHdUrl, supportFragmentManager)
+    }
+
+    override fun onItemClicked(picture: Picture) {
+        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.explanation, picture.date))
+    }
+
+    override fun onItemLongClicked(picture: Picture) {
+        presenter.onPictureLongClicked(picture)
     }
 }
