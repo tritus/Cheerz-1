@@ -33,5 +33,5 @@ class NetworkPictureSource(private val gson: Gson) : PicturesSource {
         retrofit.create(Api::class.java)
     }
 
-    override fun getPicturesSinceDate(date: Date): Deferred<List<Picture>> = api.getPictures(gson.toJson(date), API_KEY)
+    override fun getPicturesSinceDate(date: Date): Deferred<List<Picture>> = api.getPictures(java.sql.Date(date.time), API_KEY)
 }

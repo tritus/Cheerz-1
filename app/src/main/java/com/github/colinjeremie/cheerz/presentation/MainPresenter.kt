@@ -30,6 +30,7 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
                 withContext(Dispatchers.Main) {
                     val errorMessage = when ((e as? HttpException)?.code() ?: -1) {
                         HttpURLConnection.HTTP_FORBIDDEN -> R.string.error_message_unauthorized
+                        HttpURLConnection.HTTP_INTERNAL_ERROR -> R.string.R_string_error_message_internal_server
                         else -> -1
                     }
                     interaction.onRefreshFailure()

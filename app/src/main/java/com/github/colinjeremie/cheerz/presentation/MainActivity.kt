@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction {
 
     private val gson: Gson by lazy {
-        GsonBuilder().setDateFormat("YYYY-MM-DD").create()
+        GsonBuilder().setDateFormat("yyyy-MM-dd").create()
     }
 
     private val repository: PicturesRepository by lazy {
