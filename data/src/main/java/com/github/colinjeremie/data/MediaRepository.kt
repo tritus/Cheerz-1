@@ -7,16 +7,18 @@ import com.github.colinjeremie.domain.Media
 import com.github.colinjeremie.domain.Picture
 import java.util.*
 
-class MediaRepository(private val networkSource: MediaSource, private val storageSource: MediaStorageSource) {
+open class MediaRepository(private val networkSource: MediaSource, private val storageSource: MediaStorageSource) {
 
     suspend fun getLastPictures(number: Int): List<Picture> =
         getLastMedia(number, MEDIA_TYPE_IMAGE).map {
             it.toPicture()
         }
 
+    open fun getCurrentTime(): Date = Date()
+
     suspend fun getLastMedia(number: Int, mediaType: String): List<Media> {
         val todayCalendar = Calendar.getInstance().apply {
-            time = Date()
+            time = getCurrentTime()
             add(Calendar.DAY_OF_MONTH, -1)
         }
         val list = mutableListOf<Media>()
