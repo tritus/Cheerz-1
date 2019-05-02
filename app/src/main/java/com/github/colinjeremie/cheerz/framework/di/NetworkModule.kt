@@ -17,7 +17,7 @@ private const val BASE_URL = "https://api.nasa.gov"
 val networkModule: Module by lazy {
 
     module {
-        single { NetworkMediaSource(apiKey = API_KEY, api = get()) as MediaSource }
+        single<MediaSource> { NetworkMediaSource(apiKey = API_KEY, api = get()) }
         single {
             val okHttpClient = OkHttpClient().newBuilder()
                     .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build()

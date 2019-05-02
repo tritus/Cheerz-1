@@ -7,6 +7,6 @@ import org.koin.dsl.module
 
 val storageModule: Module by lazy {
     module {
-        single { InMemoryMediaStorageSource() as MediaStorageSource  }
+        single<MediaStorageSource> { InMemoryMediaStorageSource()  }
     }
 }
