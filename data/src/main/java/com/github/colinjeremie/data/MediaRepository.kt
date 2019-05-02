@@ -1,10 +1,18 @@
 package com.github.colinjeremie.data
 
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
+import com.github.colinjeremie.data.extensions.toPicture
+import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
 import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.Picture
 import java.util.*
 
 class MediaRepository(private val networkSource: MediaSource, private val storageSource: MediaStorageSource) {
+
+    suspend fun getLastPictures(number: Int): List<Picture> =
+        getLastMedia(number, MEDIA_TYPE_IMAGE).map {
+            it.toPicture()
+        }
 
     suspend fun getLastMedia(number: Int, mediaType: String): List<Media> {
         val todayCalendar = Calendar.getInstance().apply {
