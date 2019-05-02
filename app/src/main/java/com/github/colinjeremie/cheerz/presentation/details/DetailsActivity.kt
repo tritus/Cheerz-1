@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
-import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.currentScope
 import java.util.*
 
 class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
@@ -38,7 +38,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
     private val dateTextView: TextView by lazy { findViewById<TextView>(R.id.date_text_view) }
     private val descriptionTextView: TextView by lazy { findViewById<TextView>(R.id.description_text_view) }
 
-    private val presenter: DetailsPresenter by inject()
+    private val presenter: DetailsPresenter by currentScope.inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
