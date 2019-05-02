@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="preview_picture_item_margin">8dp</dimen>
+    <dimen name="preview_picture_item_corner_radius">8dp</dimen>
+    <dimen name="preview_picture_image_size">200dp</dimen>
+</resources>

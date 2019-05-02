@@ -12,6 +12,15 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.TranslucentStatusBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="AppTheme.TransparentActionBar.TranslucentStatusBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>

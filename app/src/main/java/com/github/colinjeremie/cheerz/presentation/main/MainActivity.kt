@@ -1,15 +1,20 @@
 package com.github.colinjeremie.cheerz.presentation.main
 
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.LinearLayout.VERTICAL
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.cheerz.presentation.details.DetailsActivity
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
@@ -20,15 +25,12 @@ import org.koin.androidx.scope.currentScope
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
 
     companion object {
-        private val TAG = MainActivity::class.java.simpleName
+        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 30
     }
 
-    private val retrieveButton: Button by lazy { findViewById<Button>(R.id.retrieve_button) }
-    private val retrieveNewPicturesButton: Button by lazy { findViewById<Button>(R.id.retrieve_new_pictures_button) }
     private val loadingView: View by lazy { findViewById<View>(R.id.loading_view) }
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
-    private val numberEditText: EditText by lazy { findViewById<EditText>(R.id.last_number_of_pictures_view) }
-    private val titleView: View by lazy { findViewById<View>(R.id.last_number_of_pictures_title_view) }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     private val presenter: MainPresenter by currentScope.inject()
 
@@ -40,16 +42,21 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(toolbar)
         presenter.subscribe(this)
-        retrieveButton.setOnClickListener {
-            presenter.onRetrieveButtonClicked()
-        }
-        retrieveNewPicturesButton.setOnClickListener {
-            presenter.onRetrieveNewPicturesButtonClicked()
-        }
-        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         recyclerView.adapter = adapter
+        presenter.retrievePictures(DEFAULT_LAST_NUMBER_OF_PICTURES)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        presenter.onCreateOptionsMenu(menuInflater, menu, supportActionBar)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+            presenter.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onDestroy() {
         presenter.unsubscribe()
@@ -57,38 +64,22 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     }
 
     override fun resetView() {
-        titleView.visibility = View.VISIBLE
-        numberEditText.visibility = View.VISIBLE
         loadingView.visibility = View.GONE
         recyclerView.visibility = View.GONE
-        retrieveNewPicturesButton.visibility = View.GONE
-        retrieveButton.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {
-        titleView.visibility = View.GONE
-        numberEditText.visibility = View.GONE
-        retrieveButton.visibility = View.GONE
         recyclerView.visibility = View.GONE
-        retrieveNewPicturesButton.visibility = View.GONE
         loadingView.visibility = View.VISIBLE
     }
 
     override fun onRefreshSuccess() {
         loadingView.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
-        retrieveNewPicturesButton.visibility = View.VISIBLE
     }
 
     override fun onRefreshFailure() {
         resetView()
-    }
-
-    override fun getNumberOfPicturesToRetrieve(): Int = try {
-        numberEditText.text.toString().toInt()
-    } catch (e: NumberFormatException) {
-        Log.e(TAG, "An error happened!", e)
-        0
     }
 
     override fun render(pictures: List<Picture>) {
@@ -107,25 +98,41 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
 
     override fun displayFullScreenPicture(pictureHdUrl: String) {
         FullScreenPictureDialogFragment.show(
-            pictureHdUrl,
-            supportFragmentManager
+                pictureHdUrl,
+                supportFragmentManager
         )
     }
 
     override fun onItemClicked(picture: Picture) {
         startActivity(
-            DetailsActivity.createIntent(
-                this,
-                picture.title,
-                picture.url,
-                picture.hdUrl,
-                picture.explanation,
-                picture.date
-            )
+                DetailsActivity.createIntent(
+                        this,
+                        picture.title,
+                        picture.url,
+                        picture.hdUrl,
+                        picture.explanation,
+                        picture.date
+                )
         )
     }
 
     override fun onItemLongClicked(picture: Picture) {
         presenter.onPictureLongClicked(picture)
+    }
+
+    override fun showRetrieveLastPicturesDialog() {
+        val view = EditText(this).apply {
+            hint = getString(R.string.alert_dialog_retrieve_last_pictures_hint)
+            imeOptions = EditorInfo.IME_ACTION_SEARCH
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+
+        AlertDialog.Builder(this)
+                .setView(view)
+                .setTitle(R.string.alert_dialog_retrieve_last_pictures_title)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    presenter.onRetrieveLastPicturesDialogButtonClicked(view.text.toString())
+                }
+                .show()
     }
 }

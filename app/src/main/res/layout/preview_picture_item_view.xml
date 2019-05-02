@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="@dimen/preview_picture_item_margin"
     android:foreground="?attr/selectableItemBackgroundBorderless"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="@dimen/preview_picture_item_corner_radius">
 
     <ImageView
         android:id="@+id/preview_picture_image_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/preview_picture_image_size"
+        android:layout_height="@dimen/preview_picture_image_size"
         android:scaleType="centerCrop" />
 
     <ProgressBar

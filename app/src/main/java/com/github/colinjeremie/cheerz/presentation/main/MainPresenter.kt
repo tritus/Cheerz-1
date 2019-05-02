@@ -1,6 +1,10 @@
 package com.github.colinjeremie.cheerz.presentation.main
 
 import android.support.annotation.StringRes
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.domain.Picture
 import com.github.colinjeremie.usecases.GetPicturesUseCase
@@ -23,11 +27,8 @@ class MainPresenter(private val useCase: GetPicturesUseCase) {
         interaction?.showErrorMessage(errorMessage)
     }
 
-    fun onRetrieveButtonClicked() {
+    fun retrievePictures(numberOfPicturesToRetrieve: Int) {
         getPicturesScope?.cancel()
-
-        val numberOfPicturesToRetrieve = interaction?.getNumberOfPicturesToRetrieve() ?: 0
-
         interaction?.onRefresh()
 
         getPicturesScope = CoroutineScope(Dispatchers.IO).launch {
@@ -45,10 +46,6 @@ class MainPresenter(private val useCase: GetPicturesUseCase) {
             }
             getPicturesScope?.start()
         }
-    }
-
-    fun onRetrieveNewPicturesButtonClicked() {
-        interaction?.resetView()
     }
 
     fun onPictureLongClicked(picture: Picture) {
@@ -70,14 +67,36 @@ class MainPresenter(private val useCase: GetPicturesUseCase) {
         getPicturesScope?.cancel()
     }
 
+    fun onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu?, supportActionBar: ActionBar?) {
+        menuInflater.inflate(R.menu.main_menu, menu)
+    }
+
+    fun onOptionsItemSelected(item: MenuItem?): Boolean =
+            when (item?.itemId) {
+                R.id.action_retrieve_last_pictures -> {
+                    interaction?.showRetrieveLastPicturesDialog()
+                    true
+                }
+                else -> false
+            }
+
+    fun onRetrieveLastPicturesDialogButtonClicked(numberString: String) {
+        try {
+            retrievePictures(numberString.toInt())
+        } catch (e: java.lang.NumberFormatException) {
+            interaction?.showErrorMessage(R.string.error_message_enter_a_positive_number)
+        }
+    }
+
+
     interface Interaction {
         fun render(pictures: List<Picture>)
         fun onRefresh()
         fun onRefreshSuccess()
         fun onRefreshFailure()
         fun showErrorMessage(@StringRes messageRes: Int)
-        fun getNumberOfPicturesToRetrieve(): Int
         fun resetView()
         fun displayFullScreenPicture(pictureHdUrl: String)
+        fun showRetrieveLastPicturesDialog()
     }
 }

@@ -8,4 +8,8 @@
     <string name="error_message_no_hd_picture_available">No hd media available</string>
     <string name="retry_button_text">retry</string>
     <string name="menu_item_see_in_fullscreen_text">See in fullscreen</string>
+    <string name="menu_item_retrieve_last_pictures">Fetch last pictures</string>
+    <string name="alert_dialog_retrieve_last_pictures_title">Retrieve last pictures</string>
+    <string name="alert_dialog_retrieve_last_pictures_hint">Enter a positive number</string>
+    <string name="error_message_enter_a_positive_number">Enter a positive number</string>
 </resources>
