@@ -12,9 +12,10 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DetailsPresenter(private val interaction: Interaction) {
+class DetailsPresenter {
 
     private var pictureHdUrl: String? = null
+    var interaction: Interaction? = null
 
     fun load(intent: Intent) {
         pictureHdUrl = intent.getStringExtra(DetailsActivity.EXTRA_PICTURE_HD_URL)
@@ -22,11 +23,11 @@ class DetailsPresenter(private val interaction: Interaction) {
         val pictureUrl = intent.getStringExtra(DetailsActivity.EXTRA_PICTURE_URL)
         val date = intent.getSerializableExtra(DetailsActivity.EXTRA_DATE) as Date
 
-        interaction.displayDate(SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date))
-        interaction.displayTitle(intent.getStringExtra(DetailsActivity.EXTRA_TITLE))
-        interaction.displayDescription(intent.getStringExtra(DetailsActivity.EXTRA_DESCRIPTION))
+        interaction?.displayDate(SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date))
+        interaction?.displayTitle(intent.getStringExtra(DetailsActivity.EXTRA_TITLE))
+        interaction?.displayDescription(intent.getStringExtra(DetailsActivity.EXTRA_DESCRIPTION))
 
-        Picasso.get().load(pictureUrl).into(interaction.getTargetImageView())
+        Picasso.get().load(pictureUrl).into(interaction?.getTargetImageView())
     }
 
     fun onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu?, supportActionBar: ActionBar?) {
@@ -40,15 +41,19 @@ class DetailsPresenter(private val interaction: Interaction) {
     fun onOptionsItemSelected(item: MenuItem?): Boolean =
             when (item?.itemId) {
                 android.R.id.home -> {
-                    interaction.onBackPressed()
+                    interaction?.onBackPressed()
                     true
                 }
                 R.id.action_fullscreen -> {
-                    pictureHdUrl?.let { interaction.displayPictureInHd(it) }
+                    pictureHdUrl?.let { interaction?.displayPictureInHd(it) }
                     true
                 }
                 else -> false
             }
+
+    fun onDestroy() {
+        interaction = null
+    }
 
     interface Interaction {
         fun displayDate(date: String)

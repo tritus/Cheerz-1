@@ -8,9 +8,10 @@ import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 
-class MainPresenter(private val interaction: Interaction, private val useCase: GetPicturesUseCase) {
+class MainPresenter(private val useCase: GetPicturesUseCase) {
 
     private var getPicturesScope: Job? = null
+    var interaction: Interaction? = null
 
     private fun onError(e: Exception) {
         val errorMessage = when ((e as? HttpException)?.code() ?: -1) {
@@ -18,24 +19,24 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
             HttpURLConnection.HTTP_INTERNAL_ERROR -> R.string.error_message_internal_server
             else -> -1
         }
-        interaction.onRefreshFailure()
-        interaction.showErrorMessage(errorMessage)
+        interaction?.onRefreshFailure()
+        interaction?.showErrorMessage(errorMessage)
     }
 
     fun onRetrieveButtonClicked() {
         getPicturesScope?.cancel()
 
-        val numberOfPicturesToRetrieve = interaction.getNumberOfPicturesToRetrieve()
+        val numberOfPicturesToRetrieve = interaction?.getNumberOfPicturesToRetrieve() ?: 0
 
-        interaction.onRefresh()
+        interaction?.onRefresh()
 
         getPicturesScope = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val pictures = useCase.invoke(numberOfPicturesToRetrieve)
 
                 withContext(Dispatchers.Main) {
-                    interaction.render(pictures)
-                    interaction.onRefreshSuccess()
+                    interaction?.render(pictures)
+                    interaction?.onRefreshSuccess()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -47,21 +48,22 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
     }
 
     fun onRetrieveNewPicturesButtonClicked() {
-        interaction.resetView()
+        interaction?.resetView()
     }
 
     fun onPictureLongClicked(picture: Picture) {
         val hdPictureUrl = picture.hdUrl
 
         if (hdPictureUrl?.isNotEmpty() == true) {
-            interaction.displayFullScreenPicture(hdPictureUrl)
+            interaction?.displayFullScreenPicture(hdPictureUrl)
         } else {
-            interaction.showErrorMessage(R.string.error_message_no_hd_picture_available)
+            interaction?.showErrorMessage(R.string.error_message_no_hd_picture_available)
         }
     }
 
     fun onDestroy() {
         getPicturesScope?.cancel()
+        interaction = null
     }
 
     interface Interaction {

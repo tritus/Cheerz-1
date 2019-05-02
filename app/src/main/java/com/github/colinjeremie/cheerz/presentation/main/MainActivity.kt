@@ -15,7 +15,6 @@ import com.github.colinjeremie.cheerz.presentation.details.DetailsActivity
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
 import com.github.colinjeremie.cheerz.presentation.main.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.domain.Picture
-import com.github.colinjeremie.usecases.GetPicturesUseCase
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
@@ -31,10 +30,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     private val numberEditText: EditText by lazy { findViewById<EditText>(R.id.last_number_of_pictures_view) }
     private val titleView: View by lazy { findViewById<View>(R.id.last_number_of_pictures_title_view) }
 
-    private val useCase: GetPicturesUseCase by inject()
-    private val presenter: MainPresenter by lazy {
-        MainPresenter(this, useCase)
-    }
+    private val presenter: MainPresenter by inject()
 
     private val adapter: PreviewPicturesAdapter by lazy {
         PreviewPicturesAdapter(this)
@@ -44,6 +40,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        presenter.interaction = this
         retrieveButton.setOnClickListener {
             presenter.onRetrieveButtonClicked()
         }

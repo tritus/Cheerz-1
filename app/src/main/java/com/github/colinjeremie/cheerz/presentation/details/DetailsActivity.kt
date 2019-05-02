@@ -10,10 +10,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
+import org.koin.android.ext.android.inject
 import java.util.*
 
-class DetailsActivity : AppCompatActivity(),
-    DetailsPresenter.Interaction {
+class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
 
     companion object {
 
@@ -38,17 +38,14 @@ class DetailsActivity : AppCompatActivity(),
     private val dateTextView: TextView by lazy { findViewById<TextView>(R.id.date_text_view) }
     private val descriptionTextView: TextView by lazy { findViewById<TextView>(R.id.description_text_view) }
 
-    private val presenter: DetailsPresenter by lazy {
-        DetailsPresenter(
-            this
-        )
-    }
+    private val presenter: DetailsPresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_details)
 
+        presenter.interaction = this
         presenter.load(intent)
     }
 
@@ -81,4 +78,9 @@ class DetailsActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
             presenter.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
 }
