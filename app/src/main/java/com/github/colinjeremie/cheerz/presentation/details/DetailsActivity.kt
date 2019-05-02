@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
 import org.koin.androidx.scope.currentScope
@@ -34,7 +35,8 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
     }
 
     private val titleTextView: TextView by lazy { findViewById<TextView>(R.id.title_text_view) }
-    private val imageView: ImageView by lazy { findViewById<ImageView>(R.id.image_view) }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
+    private val imageView: ImageView by lazy { findViewById<ImageView>(R.id.header_view) }
     private val dateTextView: TextView by lazy { findViewById<TextView>(R.id.date_text_view) }
     private val descriptionTextView: TextView by lazy { findViewById<TextView>(R.id.description_text_view) }
 
@@ -44,6 +46,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_details)
+        setSupportActionBar(toolbar)
 
         presenter.subscribe(this)
         presenter.load(intent)
@@ -54,7 +57,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
     }
 
     override fun displayTitle(title: String) {
-        titleTextView.text = title
+        this.titleTextView.text = title
     }
 
     override fun displayDescription(description: String) {

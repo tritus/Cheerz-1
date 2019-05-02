@@ -25,7 +25,7 @@ import org.koin.androidx.scope.currentScope
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
 
     companion object {
-        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 30
+        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 3
     }
 
     private val loadingView: View by lazy { findViewById<View>(R.id.loading_view) }

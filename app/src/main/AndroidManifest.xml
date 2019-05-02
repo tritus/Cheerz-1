@@ -26,7 +26,7 @@
         <activity
             android:name=".presentation.details.DetailsActivity"
             android:label=""
-            android:theme="@style/AppTheme.TransparentActionBar.TranslucentStatusBar" />
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatusBar" />
     </application>
 
 </manifest>
