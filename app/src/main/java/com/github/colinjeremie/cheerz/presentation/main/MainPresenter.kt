@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.main
 
 import android.support.annotation.StringRes
 import com.github.colinjeremie.cheerz.R

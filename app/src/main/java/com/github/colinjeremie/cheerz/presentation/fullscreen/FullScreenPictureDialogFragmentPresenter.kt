@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.fullscreen
 
 import android.widget.ImageView
 import androidx.annotation.StringRes

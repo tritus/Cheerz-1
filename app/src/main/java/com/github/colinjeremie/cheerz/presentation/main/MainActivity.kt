@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.main
 
 import android.os.Bundle
 import android.util.Log
@@ -11,30 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
-import com.github.colinjeremie.cheerz.framework.InMemoryMediaStorageSource
-import com.github.colinjeremie.cheerz.framework.NetworkMediaSource
-import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
-import com.github.colinjeremie.data.MediaRepository
+import com.github.colinjeremie.cheerz.presentation.details.DetailsActivity
+import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
+import com.github.colinjeremie.cheerz.presentation.main.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.domain.Picture
 import com.github.colinjeremie.usecases.GetPicturesUseCase
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
-    }
-
-    private val gson: Gson by lazy {
-        GsonBuilder().setDateFormat("yyyy-MM-dd").create()
-    }
-
-    private val repository: MediaRepository by lazy {
-        MediaRepository(NetworkMediaSource(gson), InMemoryMediaStorageSource())
-    }
-    private val presenter: MainPresenter by lazy {
-        MainPresenter(this, GetPicturesUseCase(repository))
     }
 
     private val retrieveButton: Button by lazy { findViewById<Button>(R.id.retrieve_button) }
@@ -43,6 +30,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
     private val numberEditText: EditText by lazy { findViewById<EditText>(R.id.last_number_of_pictures_view) }
     private val titleView: View by lazy { findViewById<View>(R.id.last_number_of_pictures_title_view) }
+
+    private val useCase: GetPicturesUseCase by inject()
+    private val presenter: MainPresenter by lazy {
+        MainPresenter(this, useCase)
+    }
 
     private val adapter: PreviewPicturesAdapter by lazy {
         PreviewPicturesAdapter(this)
@@ -117,11 +109,23 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     }
 
     override fun displayFullScreenPicture(pictureHdUrl: String) {
-        FullScreenPictureDialogFragment.show(pictureHdUrl, supportFragmentManager)
+        FullScreenPictureDialogFragment.show(
+            pictureHdUrl,
+            supportFragmentManager
+        )
     }
 
     override fun onItemClicked(picture: Picture) {
-        startActivity(DetailsActivity.createIntent(this, picture.title, picture.url, picture.hdUrl, picture.explanation, picture.date))
+        startActivity(
+            DetailsActivity.createIntent(
+                this,
+                picture.title,
+                picture.url,
+                picture.hdUrl,
+                picture.explanation,
+                picture.date
+            )
+        )
     }
 
     override fun onItemLongClicked(picture: Picture) {

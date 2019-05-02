@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.details
 
 import android.content.Intent
 import android.view.Menu

@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.details
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.colinjeremie.cheerz.R
+import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
 import java.util.*
 
-class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
+class DetailsActivity : AppCompatActivity(),
+    DetailsPresenter.Interaction {
 
     companion object {
 
@@ -36,7 +38,11 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
     private val dateTextView: TextView by lazy { findViewById<TextView>(R.id.date_text_view) }
     private val descriptionTextView: TextView by lazy { findViewById<TextView>(R.id.description_text_view) }
 
-    private val presenter: DetailsPresenter by lazy { DetailsPresenter(this) }
+    private val presenter: DetailsPresenter by lazy {
+        DetailsPresenter(
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +67,10 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
     override fun getTargetImageView(): ImageView = imageView
 
     override fun displayPictureInHd(url: String) {
-        FullScreenPictureDialogFragment.show(url, supportFragmentManager)
+        FullScreenPictureDialogFragment.show(
+            url,
+            supportFragmentManager
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

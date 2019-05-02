@@ -1,11 +1,11 @@
-package com.github.colinjeremie.cheerz.presentation.adapters.viewholders
+package com.github.colinjeremie.cheerz.presentation.main.adapters.viewholders
 
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
-import com.github.colinjeremie.cheerz.presentation.adapters.PreviewPicturesAdapter
+import com.github.colinjeremie.cheerz.presentation.main.adapters.PreviewPicturesAdapter
 import com.github.colinjeremie.domain.Picture
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso

@@ -1,4 +1,4 @@
-package com.github.colinjeremie.cheerz.presentation
+package com.github.colinjeremie.cheerz.presentation.fullscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.github.colinjeremie.cheerz.R
 
-class FullScreenPictureDialogFragment : DialogFragment(), FullScreenPictureDialogFragmentPresenter.Interaction {
+class FullScreenPictureDialogFragment : DialogFragment(),
+    FullScreenPictureDialogFragmentPresenter.Interaction {
 
     companion object {
         private const val EXTRA_HD_URL = "extra_hd_url"
@@ -29,7 +30,9 @@ class FullScreenPictureDialogFragment : DialogFragment(), FullScreenPictureDialo
                 fragmentManager.findFragmentByTag(TAG)?.let { previousFragment ->
                     remove(previousFragment)
                 }
-                add(fragment, TAG)
+                add(fragment,
+                    TAG
+                )
                 commit()
             }
         }
@@ -46,7 +49,9 @@ class FullScreenPictureDialogFragment : DialogFragment(), FullScreenPictureDialo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        pictureUrl = savedInstanceState?.getString(EXTRA_HD_URL) ?: arguments?.getString(EXTRA_HD_URL) ?: throw IllegalArgumentException("Missing picture url!")
+        pictureUrl = savedInstanceState?.getString(EXTRA_HD_URL) ?: arguments?.getString(
+            EXTRA_HD_URL
+        ) ?: throw IllegalArgumentException("Missing picture url!")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
