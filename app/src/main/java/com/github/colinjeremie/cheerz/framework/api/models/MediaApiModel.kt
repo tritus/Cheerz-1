@@ -16,6 +16,4 @@ data class MediaApiModel(
         val url: String,
         @SerializedName("hdurl")
         val hdUrl: String?
-) {
-    fun isMediaTypeEquals(mediaType: String): Boolean = this.mediaType == mediaType
-}
+)

@@ -1,6 +1,7 @@
 package com.github.colinjeremie.cheerz.presentation.main
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
@@ -16,17 +17,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.colinjeremie.cheerz.R
+import com.github.colinjeremie.cheerz.framework.models.Picture
 import com.github.colinjeremie.cheerz.presentation.details.DetailsActivity
 import com.github.colinjeremie.cheerz.presentation.fullscreen.FullScreenPictureDialogFragment
 import com.github.colinjeremie.cheerz.presentation.main.adapters.PreviewPicturesAdapter
-import com.github.colinjeremie.domain.Picture
 import org.koin.androidx.scope.currentScope
 
 class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPicturesAdapter.Interaction {
-
-    companion object {
-        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 3
-    }
 
     private val loadingView: View by lazy { findViewById<View>(R.id.loading_view) }
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
@@ -46,11 +43,16 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         presenter.subscribe(this)
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         recyclerView.adapter = adapter
-        presenter.retrievePictures(DEFAULT_LAST_NUMBER_OF_PICTURES)
+        presenter.onCreate(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        presenter.onSaveInstanceState(outState, adapter.items)
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        presenter.onCreateOptionsMenu(menuInflater, menu, supportActionBar)
+        presenter.onCreateOptionsMenu(menuInflater, menu)
 
         return super.onCreateOptionsMenu(menu)
     }

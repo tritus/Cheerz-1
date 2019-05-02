@@ -5,8 +5,8 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
+import com.github.colinjeremie.cheerz.framework.models.Picture
 import com.github.colinjeremie.cheerz.presentation.main.adapters.PreviewPicturesAdapter
-import com.github.colinjeremie.domain.Picture
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 

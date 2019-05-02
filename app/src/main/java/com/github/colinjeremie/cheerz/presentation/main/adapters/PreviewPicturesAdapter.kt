@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.colinjeremie.cheerz.R
+import com.github.colinjeremie.cheerz.framework.models.Picture
 import com.github.colinjeremie.cheerz.presentation.main.adapters.viewholders.PreviewPicturesViewHolder
-import com.github.colinjeremie.domain.Picture
 
 class PreviewPicturesAdapter(private val interaction: Interaction?) : RecyclerView.Adapter<PreviewPicturesViewHolder>() {
 
