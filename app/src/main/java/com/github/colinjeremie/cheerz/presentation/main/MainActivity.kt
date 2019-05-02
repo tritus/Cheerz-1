@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter.interaction = this
+        presenter.subscribe(this)
         retrieveButton.setOnClickListener {
             presenter.onRetrieveButtonClicked()
         }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        presenter.unsubscribe()
         super.onDestroy()
     }
 

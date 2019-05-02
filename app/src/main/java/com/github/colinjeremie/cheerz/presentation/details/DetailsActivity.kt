@@ -45,7 +45,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
 
         setContentView(R.layout.activity_details)
 
-        presenter.interaction = this
+        presenter.subscribe(this)
         presenter.load(intent)
     }
 
@@ -80,7 +80,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
             presenter.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        presenter.unsubscribe()
         super.onDestroy()
     }
 }

@@ -61,9 +61,13 @@ class MainPresenter(private val useCase: GetPicturesUseCase) {
         }
     }
 
-    fun onDestroy() {
+    fun subscribe(interaction: Interaction) {
+        this.interaction = interaction
+    }
+
+    fun unsubscribe() {
+        this.interaction = null
         getPicturesScope?.cancel()
-        interaction = null
     }
 
     interface Interaction {

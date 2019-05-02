@@ -51,8 +51,12 @@ class DetailsPresenter {
                 else -> false
             }
 
-    fun onDestroy() {
-        interaction = null
+    fun subscribe(interaction: Interaction) {
+        this.interaction = interaction
+    }
+
+    fun unsubscribe() {
+        this.interaction = null
     }
 
     interface Interaction {
