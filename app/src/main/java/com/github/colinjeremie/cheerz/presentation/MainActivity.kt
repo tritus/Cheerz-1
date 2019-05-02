@@ -62,6 +62,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         recyclerView.adapter = adapter
     }
 
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
     override fun resetView() {
         titleView.visibility = View.VISIBLE
         numberEditText.visibility = View.VISIBLE

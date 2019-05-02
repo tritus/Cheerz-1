@@ -56,6 +56,10 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
         }
     }
 
+    fun onDestroy() {
+        getPicturesScope?.cancel()
+    }
+
     interface Interaction {
         fun render(pictures: List<Picture>)
         fun onRefresh()
