@@ -12,6 +12,16 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
 
     private var getPicturesScope: Job? = null
 
+    private fun onError(e: Exception) {
+        val errorMessage = when ((e as? HttpException)?.code() ?: -1) {
+            HttpURLConnection.HTTP_FORBIDDEN -> R.string.error_message_unauthorized
+            HttpURLConnection.HTTP_INTERNAL_ERROR -> R.string.error_message_internal_server
+            else -> -1
+        }
+        interaction.onRefreshFailure()
+        interaction.showErrorMessage(errorMessage)
+    }
+
     fun onRetrieveButtonClicked() {
         getPicturesScope?.cancel()
 
@@ -29,13 +39,7 @@ class MainPresenter(private val interaction: Interaction, private val useCase: G
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    val errorMessage = when ((e as? HttpException)?.code() ?: -1) {
-                        HttpURLConnection.HTTP_FORBIDDEN -> R.string.error_message_unauthorized
-                        HttpURLConnection.HTTP_INTERNAL_ERROR -> R.string.error_message_internal_server
-                        else -> -1
-                    }
-                    interaction.onRefreshFailure()
-                    interaction.showErrorMessage(errorMessage)
+                    onError(e)
                 }
             }
             getPicturesScope?.start()
