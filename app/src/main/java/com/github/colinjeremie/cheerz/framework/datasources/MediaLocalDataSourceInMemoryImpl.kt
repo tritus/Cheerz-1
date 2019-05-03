@@ -3,7 +3,7 @@ package com.github.colinjeremie.cheerz.framework.datasources
 import com.github.colinjeremie.cheerz.framework.extensions.areDateEquals
 import com.github.colinjeremie.data.datasources.MediaLocalDataSource
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
-import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.entities.Media
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers

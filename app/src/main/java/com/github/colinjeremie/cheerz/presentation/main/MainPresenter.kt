@@ -8,7 +8,7 @@ import android.view.MenuItem
 import com.github.colinjeremie.cheerz.R
 import com.github.colinjeremie.cheerz.framework.extensions.toPictureAppModel
 import com.github.colinjeremie.cheerz.framework.models.Picture
-import com.github.colinjeremie.usecases.GetPicturesUseCase
+import com.github.colinjeremie.domain.usecases.GetPicturesUseCase
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.HttpURLConnection

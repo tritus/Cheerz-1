@@ -1,7 +1,7 @@
 package com.github.colinjeremie.cheerz.framework.extensions
 
 import com.github.colinjeremie.cheerz.framework.models.Picture
-import com.github.colinjeremie.domain.Picture as PictureDomain
+import com.github.colinjeremie.domain.entities.Picture as PictureDomain
 
 
 fun PictureDomain.toPictureAppModel() =

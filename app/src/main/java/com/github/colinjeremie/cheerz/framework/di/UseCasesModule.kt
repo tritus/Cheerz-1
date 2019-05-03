@@ -1,6 +1,6 @@
 package com.github.colinjeremie.cheerz.framework.di
 
-import com.github.colinjeremie.usecases.GetPicturesUseCase
+import com.github.colinjeremie.domain.usecases.GetPicturesUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

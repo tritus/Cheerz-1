@@ -1,4 +1,4 @@
-package com.github.colinjeremie.domain
+package com.github.colinjeremie.domain.entities
 
 import java.util.*
 

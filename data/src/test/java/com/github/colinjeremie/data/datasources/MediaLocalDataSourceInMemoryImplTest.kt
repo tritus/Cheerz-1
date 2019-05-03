@@ -2,7 +2,7 @@ package com.github.colinjeremie.data.datasources
 
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
 import com.github.colinjeremie.data.extensions.areDateEquals
-import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.entities.Media
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers

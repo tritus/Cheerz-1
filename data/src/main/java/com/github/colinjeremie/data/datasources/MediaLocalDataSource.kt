@@ -1,6 +1,6 @@
 package com.github.colinjeremie.data.datasources
 
-import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.entities.Media
 import kotlinx.coroutines.Deferred
 import java.util.*
 

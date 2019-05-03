@@ -2,8 +2,8 @@ package com.github.colinjeremie.cheerz.framework
 
 import com.github.colinjeremie.cheerz.framework.datasources.MediaLocalDataSourceInMemoryImpl
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
-import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
-import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.entities.MEDIA_TYPE_IMAGE
+import com.github.colinjeremie.domain.entities.Media
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -28,7 +28,14 @@ class MediaLocalDataSourceInMemoryImplTest {
         // Give
         val source = MediaLocalDataSourceInMemoryImpl()
         val date = Date()
-        val media = Media("title", "explanation", MEDIA_TYPE_IMAGE, date, "url", "hdurl")
+        val media = Media(
+            "title",
+            "explanation",
+            MEDIA_TYPE_IMAGE,
+            date,
+            "url",
+            "hdurl"
+        )
         source.saveMedia(media)
 
         runBlocking {
@@ -46,7 +53,14 @@ class MediaLocalDataSourceInMemoryImplTest {
         // Give
         val source = MediaLocalDataSourceInMemoryImpl()
         val date = Date()
-        val media = Media("title", "explanation", MEDIA_TYPE_IMAGE, date, "url", "hdurl")
+        val media = Media(
+            "title",
+            "explanation",
+            MEDIA_TYPE_IMAGE,
+            date,
+            "url",
+            "hdurl"
+        )
         source.saveMedia(media)
 
         runBlocking {

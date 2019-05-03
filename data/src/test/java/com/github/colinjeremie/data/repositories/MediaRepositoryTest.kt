@@ -2,8 +2,8 @@ package com.github.colinjeremie.data.repositories
 
 import com.github.colinjeremie.data.datasources.MediaLocalDataSourceInMemoryImplTest
 import com.github.colinjeremie.data.datasources.MediaRemoteDataSourceImplTest
-import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
-import com.github.colinjeremie.domain.Media
+import com.github.colinjeremie.domain.entities.MEDIA_TYPE_IMAGE
+import com.github.colinjeremie.domain.entities.Media
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -65,7 +65,7 @@ class MediaRepositoryTest {
         // Given
         val storageSource = MediaLocalDataSourceInMemoryImplTest()
         val repository = spy(
-            MediaRepository(
+            MediaRepositoryImpl(
                 MediaRemoteDataSourceImplTest(media),
                 storageSource
             )
@@ -94,7 +94,7 @@ class MediaRepositoryTest {
         val numberOfPictureToGet = media.size
         val storageSource = spy(MediaLocalDataSourceInMemoryImplTest(media.toMutableList()))
         val networkSource = spy(MediaRemoteDataSourceImplTest())
-        val repository = spy(MediaRepository(networkSource, storageSource))
+        val repository = spy(MediaRepositoryImpl(networkSource, storageSource))
         val currentTime = Calendar.getInstance().run {
             time = media1.date
             add(Calendar.DAY_OF_MONTH, 1)
@@ -134,7 +134,7 @@ class MediaRepositoryTest {
                 )
             )
         )
-        val repository = spy(MediaRepository(networkSource, storageSource))
+        val repository = spy(MediaRepositoryImpl(networkSource, storageSource))
         val currentTime = Calendar.getInstance().run {
             time = media1.date
             add(Calendar.DAY_OF_MONTH, 1)
