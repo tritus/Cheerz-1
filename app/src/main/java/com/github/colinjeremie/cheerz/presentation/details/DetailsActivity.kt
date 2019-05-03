@@ -48,6 +48,7 @@ class DetailsActivity : AppCompatActivity(), DetailsPresenter.Interaction {
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
+        title = ""
         presenter.subscribe(this)
         presenter.load(intent)
     }

@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
+        title = ""
         presenter.subscribe(this)
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         recyclerView.adapter = adapter
