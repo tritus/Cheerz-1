@@ -16,7 +16,7 @@ import java.net.HttpURLConnection
 class MainPresenter(private val useCase: GetPicturesUseCase) {
 
     companion object {
-        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 3
+        private const val DEFAULT_LAST_NUMBER_OF_PICTURES = 30
         private const val EXTRA_PICTURE_LIST_KEY = "extra_picture_list_key"
     }
 
