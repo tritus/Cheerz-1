@@ -1,4 +1,4 @@
-package com.github.colinjeremie.data
+package com.github.colinjeremie.data.extensions
 
 import java.util.*
 

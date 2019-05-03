@@ -1,7 +1,7 @@
-package com.github.colinjeremie.cheerz.framework
+package com.github.colinjeremie.cheerz.framework.datasources
 
 import com.github.colinjeremie.cheerz.framework.extensions.areDateEquals
-import com.github.colinjeremie.data.MediaStorageSource
+import com.github.colinjeremie.data.datasources.MediaLocalDataSource
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
 import com.github.colinjeremie.domain.Media
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.util.*
 
-class InMemoryMediaStorageSource : MediaStorageSource {
+class MediaLocalDataSourceInMemoryImpl : MediaLocalDataSource {
     private val media: MutableList<Media> by lazy {
         mutableListOf<Media>()
     }

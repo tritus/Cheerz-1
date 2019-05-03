@@ -1,5 +1,6 @@
 package com.github.colinjeremie.cheerz.framework
 
+import com.github.colinjeremie.cheerz.framework.datasources.MediaLocalDataSourceInMemoryImpl
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
 import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
 import com.github.colinjeremie.domain.Media
@@ -8,12 +9,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.*
 
-class InMemoryMediaStorageSourceTest {
+class MediaLocalDataSourceInMemoryImplTest {
 
     @Test(expected = MediaNotFoundException::class)
     fun `should throw media not found when list is empty`() {
         // Given
-        val source = InMemoryMediaStorageSource()
+        val source = MediaLocalDataSourceInMemoryImpl()
         val date = Date()
 
         // When
@@ -25,7 +26,7 @@ class InMemoryMediaStorageSourceTest {
     @Test(expected = MediaNotFoundException::class)
     fun `should throw media not found when item not found`() {
         // Give
-        val source = InMemoryMediaStorageSource()
+        val source = MediaLocalDataSourceInMemoryImpl()
         val date = Date()
         val media = Media("title", "explanation", MEDIA_TYPE_IMAGE, date, "url", "hdurl")
         source.saveMedia(media)
@@ -43,7 +44,7 @@ class InMemoryMediaStorageSourceTest {
     @Test
     fun `should get saved media`() {
         // Give
-        val source = InMemoryMediaStorageSource()
+        val source = MediaLocalDataSourceInMemoryImpl()
         val date = Date()
         val media = Media("title", "explanation", MEDIA_TYPE_IMAGE, date, "url", "hdurl")
         source.saveMedia(media)

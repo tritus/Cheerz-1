@@ -1,5 +1,7 @@
-package com.github.colinjeremie.data
+package com.github.colinjeremie.data.repositories
 
+import com.github.colinjeremie.data.datasources.MediaLocalDataSourceInMemoryImplTest
+import com.github.colinjeremie.data.datasources.MediaRemoteDataSourceImplTest
 import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
 import com.github.colinjeremie.domain.Media
 import junit.framework.Assert.assertEquals
@@ -61,8 +63,13 @@ class MediaRepositoryTest {
     @Test
     fun `should save all pictures in storage`() {
         // Given
-        val storageSource = InMemoryMediaStorageSourceTest()
-        val repository = spy(MediaRepository(MediaSourceTest(media), storageSource))
+        val storageSource = MediaLocalDataSourceInMemoryImplTest()
+        val repository = spy(
+            MediaRepository(
+                MediaRemoteDataSourceImplTest(media),
+                storageSource
+            )
+        )
         val currentTime = Calendar.getInstance().run {
             time = media1.date
             add(Calendar.DAY_OF_MONTH, 1)
@@ -85,8 +92,8 @@ class MediaRepositoryTest {
     fun `should retrieve all pictures from storage and none from network`() {
         // Given
         val numberOfPictureToGet = media.size
-        val storageSource = spy(InMemoryMediaStorageSourceTest(media.toMutableList()))
-        val networkSource = spy(MediaSourceTest())
+        val storageSource = spy(MediaLocalDataSourceInMemoryImplTest(media.toMutableList()))
+        val networkSource = spy(MediaRemoteDataSourceImplTest())
         val repository = spy(MediaRepository(networkSource, storageSource))
         val currentTime = Calendar.getInstance().run {
             time = media1.date
@@ -119,8 +126,14 @@ class MediaRepositoryTest {
             it.copy(date = date)
 
         }
-        val storageSource = spy(InMemoryMediaStorageSourceTest(media.toMutableList()))
-        val networkSource = spy(MediaSourceTest(listOf(mediaFromNetwork)))
+        val storageSource = spy(MediaLocalDataSourceInMemoryImplTest(media.toMutableList()))
+        val networkSource = spy(
+            MediaRemoteDataSourceImplTest(
+                listOf(
+                    mediaFromNetwork
+                )
+            )
+        )
         val repository = spy(MediaRepository(networkSource, storageSource))
         val currentTime = Calendar.getInstance().run {
             time = media1.date

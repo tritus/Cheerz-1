@@ -1,5 +1,7 @@
-package com.github.colinjeremie.data
+package com.github.colinjeremie.data.repositories
 
+import com.github.colinjeremie.data.datasources.MediaLocalDataSource
+import com.github.colinjeremie.data.datasources.MediaRemoteDataSource
 import com.github.colinjeremie.data.exceptions.MediaNotFoundException
 import com.github.colinjeremie.data.extensions.toPicture
 import com.github.colinjeremie.domain.MEDIA_TYPE_IMAGE
@@ -7,7 +9,7 @@ import com.github.colinjeremie.domain.Media
 import com.github.colinjeremie.domain.Picture
 import java.util.*
 
-open class MediaRepository(private val networkSource: MediaSource, private val storageSource: MediaStorageSource) {
+open class MediaRepository(private val networkRemoteDataSource: MediaRemoteDataSource, private val localDataSource: MediaLocalDataSource) {
 
     suspend fun getLastPictures(number: Int): List<Picture> =
         getLastMedia(number, MEDIA_TYPE_IMAGE).map {
@@ -31,7 +33,7 @@ open class MediaRepository(private val networkSource: MediaSource, private val s
                         getMediaFromStorageAtDate(date)
                     } catch (e: MediaNotFoundException) {
                         getMediaFromNetworkAtDate(date).also {
-                            storageSource.saveMedia(it)
+                            localDataSource.saveMedia(it)
                         }
                     }
             if (media.mediaType == mediaType) {
@@ -43,8 +45,8 @@ open class MediaRepository(private val networkSource: MediaSource, private val s
     }
 
     private suspend fun getMediaFromStorageAtDate(date: Date): Media =
-            storageSource.getMediaAtDate(date).await()
+            localDataSource.getMediaAtDate(date).await()
 
     private suspend fun getMediaFromNetworkAtDate(date: Date): Media =
-            networkSource.getMediaAtDate(date).await()
+            networkRemoteDataSource.getMediaAtDate(date).await()
 }
