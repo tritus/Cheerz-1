@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity(), MainPresenter.Interaction, PreviewPict
         presenter.onCreate(savedInstanceState)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         presenter.onSaveInstanceState(outState, adapter.items)
-        super.onSaveInstanceState(outState, outPersistentState)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

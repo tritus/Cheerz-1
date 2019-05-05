@@ -107,10 +107,10 @@ class MainPresenter(private val useCase: GetPicturesUseCase) {
     }
 
     fun onSaveInstanceState(
-        outState: Bundle?,
+        outState: Bundle,
         items: List<Picture>
     ) {
-        outState?.putParcelableArrayList(EXTRA_PICTURE_LIST_KEY, ArrayList(items))
+        outState.putParcelableArrayList(EXTRA_PICTURE_LIST_KEY, ArrayList(items))
     }
 
 
